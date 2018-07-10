@@ -2,9 +2,11 @@ import numpy
 import pandas
 import os
 
-os.chdir('C:\Users\graham.farley\Documents\Documents\Python')
-#Simplify Morphology
+"""This script takes an input of an excel file containing cross-section data (x,z), and simplifies that cross-section
+to the desired number of points (q) using visvalingam's algorithm"""
 
+
+os.chdir('C:\Users\graham.farley\Documents\Documents\Python')
 
 
 data = pandas.read_excel('testXS.xlsx',headers=None)
@@ -33,22 +35,23 @@ def TriAreaCalc(pt1,pt2,pt3):
 
 
 """ What  we want to do is look at sets of three points, calculate the area
-of the triangle formed by those three points, then """
+of the triangle formed by those three points, then remove the point corresponding to the 
+triangle of the smallest area, until we are left with q points"""
 
 
 
 
 n = N
-while (n > q):
+while (n > q):   #loop until q points remain
     i = 1
-    B1 =numpy.inf
-    while (i<=n-2):
+    B1 =numpy.inf  #set the initial smallest area as infinite, so any calculated area will be smaller
+    while (i<=n-2):  #Do not delete the endpoints, so calculate areas from the second point, to the second to last point
         p1 = A[(i-1),:]
         p2 = A[(i),:]
         p3 = A[(i+1),:]
         B2 = TriAreaCalc(p1,p2,p3)
 
-        if B2 < B1:
+        if B2 < B1:   #If the calculated area is smaller than the previous smallest, make this the new point to be deleted. 
             B1 = B2
             del_pt = i
             print("New Delete pt:")
